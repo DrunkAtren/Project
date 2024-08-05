@@ -28,6 +28,19 @@ export class Message
         await this.ResponseConsole(response);
     }
 
+    async GETAuthHeader()
+    {
+        await fetch("https://reqbin.com/echo/get/json",
+            {
+            headers: {
+                Authorization: `Bearer {token}`,
+              },
+              
+        })
+        .then(resp => resp.json())
+        .then(json => console.log(JSON.stringify(json)));
+    }
+
     async GETInventoryBySelect()
     {
         const response = await this.request.get(baseUrl+'v2/store/inventory');

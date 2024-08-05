@@ -2,12 +2,12 @@
 
 import { test} from '@playwright/test';
 import { Message, baseUrl} from '../API/messages';
-import { TEST, POST_PET, PUT_PET, DELETE_PET } from '../test_data.json'
+import { STATUS, POST_PET, PUT_PET, DELETE_PET } from '../test_data.json'
 
 
 test.describe('API GET',() => {
 
-  for (const select of TEST) {
+  for (const select of STATUS) {
     test('GET Pet by status '+select, async ({ request }) => {
 
     const message = new Message (request);
@@ -20,6 +20,13 @@ test.describe('API GET',() => {
     
     const message = new Message( request);
     await message.GETInventoryBySelect();
+
+  })
+
+  test('GET With Authorization', async ({ request }) => {
+    
+    const message = new Message( request);
+    await message.GETAuthHeader();
 
   })
 });
