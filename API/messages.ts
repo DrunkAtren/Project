@@ -32,9 +32,10 @@ export class Message
     {
         await fetch("https://reqbin.com/echo/get/json",
             {
-            headers: {
-                Authorization: `Bearer {token}`,
-              },
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer {token}',
+                },
               
         })
         .then(resp => resp.json())
