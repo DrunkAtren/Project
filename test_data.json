@@ -1,10 +1,10 @@
 {
     "STATUS":
     [
-        "pending","sold","xd"
+        "pending","sold","test"
     ],
-    "POST_PET":[
-    {
+    "POST_PET":
+    [{
         "PetId":"0",
         "CategoryId":"1",
         "CategoryName":"tak2",
@@ -24,8 +24,8 @@
         "TagName":"Tak2",
         "Status":"Sold"
     }],
-    "PUT_PET":[
-    {
+    "PUT_PET":
+    [{
         "PetId":"0",
         "CategoryId":"1",
         "CategoryName":"tak2",
@@ -35,8 +35,20 @@
         "TagName":"Tak2",
         "Status":"Sold"
     }],
-    "DELETE_PET":[
+    "DELETE_PET":
+    [{
+        "PetId":"1"
+    }],
+    "POSTImage":
+    [{
+        "petId":"1",
+        "additionalMetadata":"xd",
+        "filename":"apple.png"
+    },
     {
-        "PetId":"255"
-    }]
+        "petId":"2",
+        "additionalMetadata":"xd2",
+        "filename":"orange.png"
+    }
+    ]
 }

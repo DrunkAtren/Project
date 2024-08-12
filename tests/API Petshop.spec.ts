@@ -1,8 +1,10 @@
 // @ts-check
 
 import { test} from '@playwright/test';
-import { Message, baseUrl} from '../API/messages';
-import { STATUS, POST_PET, PUT_PET, DELETE_PET } from '../test_data.json'
+import { Message } from '../API/messages';
+import { STATUS, POST_PET, PUT_PET, DELETE_PET, POSTImage } from '../test_data.json'
+import path from 'path';
+import fs from "fs";
 
 
 test.describe('API GET',() => {
@@ -22,49 +24,68 @@ test.describe('API GET',() => {
     await message.GETInventoryBySelect();
 
   })
-
-  test('GET With Authorization', async ({ request }) => {
-    
-    const message = new Message( request);
-    await message.GETAuthHeader();
-
-  })
 });
 
 test.describe('API POST',() => 
 {
 
-  POST_PET.forEach(data => 
-  {
-  test('POST Pet ' + data.PetId , async ({ request }) => 
+    POST_PET.forEach(data => 
     {
-  
-    const message = new Message( request);
+    test('POST Pet (With header) with PetID = ' + data.PetId , async ({ request }) => 
+      {
 
-    const placeholderPost = 
-    {
-      
-        "id": data.PetId,
-        "category": 
-        {
-          "id": data.CategoryId,
-          "name": data.CategoryName
-        },
-        "name": data.Name,
-        "photoUrls": [ data.photoUrls ],
-        "tags": 
-        [{
-          "id": data.TagId,
-          "name": data.TagName
-        }],
-        "status": data.Status 
+      const message = new Message( request);
+
+      const templatePost = 
+      {
+          "id": data.PetId,
+          "category": 
+          {
+            "id": data.CategoryId,
+            "name": data.CategoryName
+          },
+          "name": data.Name,
+          "photoUrls": [ data.photoUrls ],
+          "tags": 
+          [{
+            "id": data.TagId,
+            "name": data.TagName
+          }],
+          "status": data.Status 
+      }
+
+      await message.POST(templatePost);
+      })
     }
+    )
 
-    await message.POST(placeholderPost);
-    })
-  }
-)}
-);
+    POSTImage.forEach(data => 
+    {
+    test('POST Image '+ data.filename+' on PetId = '+data.petId, async ({ request }) => 
+      {
+        
+      const message = new Message( request);
+
+      const file = path.resolve("./image/", data.filename);
+      const image = fs.readFileSync(file);
+
+      const templatePost =
+      {
+                petId:data.petId,
+                additionalMetadata:data.additionalMetadata,
+                file: 
+                    {
+                    name: file,
+                    mimeType: 'image/png',
+                    buffer: image
+                  }
+      }
+
+      await message.POSTImage(templatePost);
+      })
+    }
+    )
+})
 
 test.describe('API DELETE',() => 
   {
@@ -87,7 +108,7 @@ test.describe('API PUT',() =>
     test('PUT Pet by ID '+ data.PetId , async ({ request }) => 
     {
       const message = new Message( request);
-      const placeholderPost = 
+      const templatePost = 
       {
         
           "id": data.PetId,
@@ -106,21 +127,21 @@ test.describe('API PUT',() =>
           "status": data.Status 
       }
 
-      await message.PUT(placeholderPost);
+      await message.PUT(templatePost);
     })
   })
 });
 
 
-  // test.beforeEach(async ({ page }) => 
-  //   {
-  //     await page.goto(baseUrl)
+// test.beforeEach(async ({ page }) => 
+//   {
+//     await page.goto(baseUrl)
 
-  //     const petshopPage = new PetShopPage(page);
+//     const petshopPage = new PetShopPage(page);
 
-  //     await petshopPage.clickCookies();
-  //     await petshopPage.clickAuthorizeButton();
-  //     await petshopPage.enterApiKey('special-key');
-  //     await petshopPage.clickAuthorize();
-  //     await petshopPage.clickCloseAuth();
-  //   });
+//     await petshopPage.clickCookies();
+//     await petshopPage.clickAuthorizeButton();
+//     await petshopPage.enterApiKey('special-key');
+//     await petshopPage.clickAuthorize();
+//     await petshopPage.clickCloseAuth();
+//   });

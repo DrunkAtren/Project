@@ -1,5 +1,8 @@
 import { APIRequestContext, expect } from '@playwright/test';
+import fs from "fs";
+import path from "path";
 
+export const api_key = "special-key"
 export const baseUrl = 'https://petstore.swagger.io/'
 export class Message 
 {
@@ -28,20 +31,6 @@ export class Message
         await this.ResponseConsole(response);
     }
 
-    async GETAuthHeader()
-    {
-        await fetch("https://reqbin.com/echo/get/json",
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer {token}',
-                },
-              
-        })
-        .then(resp => resp.json())
-        .then(json => console.log(JSON.stringify(json)));
-    }
-
     async GETInventoryBySelect()
     {
         const response = await this.request.get(baseUrl+'v2/store/inventory');
@@ -51,15 +40,26 @@ export class Message
 
     async POST(body: any, )
     {
-        // const apii_key = 'special-key';
         const response = await this.request.post(baseUrl+'v2/pet', 
         {
-            // headers:{
-            //     api_key: apii_key
-            // },
+            headers: {
+                'api_key': `(${api_key})`,
+            },
             data:body
         });
         expect(response.json)
+        await this.ResponseConsole(response);
+    }
+
+    async POSTImage(multipart:any)
+    {   
+ 
+        const response = await this.request.post(baseUrl+'v2/pet/1/uploadImage', 
+            {
+                multipart:multipart
+            }
+        );
+
         await this.ResponseConsole(response);
     }
 
