@@ -23,7 +23,7 @@ test.describe('API GET',() => {
     const message = new Message( request);
     await message.GETInventoryBySelect();
 
-  })
+  });
 });
 
 test.describe('API POST',() => 
@@ -131,17 +131,3 @@ test.describe('API PUT',() =>
     })
   })
 });
-
-
-// test.beforeEach(async ({ page }) => 
-//   {
-//     await page.goto(baseUrl)
-
-//     const petshopPage = new PetShopPage(page);
-
-//     await petshopPage.clickCookies();
-//     await petshopPage.clickAuthorizeButton();
-//     await petshopPage.enterApiKey('special-key');
-//     await petshopPage.clickAuthorize();
-//     await petshopPage.clickCloseAuth();
-//   });
